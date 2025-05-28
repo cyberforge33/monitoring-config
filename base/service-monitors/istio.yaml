@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: istio-service-monitor
+  namespace: istio-system
+  labels:    
+    release: kube-prometheus-stack
+spec:
+  jobLabel: istio
+  targetLabels: [app]
+  selector:
+    matchExpressions:
+    - {key: istio, operator: In, values: [pilot]}
+  namespaceSelector:
+    any: true
+  endpoints:
+  - port: http-monitoring
+    interval: 15s

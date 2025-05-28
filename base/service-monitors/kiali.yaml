@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kiali-service-monitor
+  namespace: istio-system
+  labels:
+    release: kube-prometheus-stack
+spec:
+  jobLabel: kiali
+  targetLabels: [app]
+  selector:
+    matchExpressions:
+    - {key: app, operator: In, values: [kiali]}
+  namespaceSelector:
+    any: true
+  endpoints:
+    - port: http-metrics
+      path: /metrics
+      interval: 15s
